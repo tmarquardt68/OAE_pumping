@@ -1,0 +1,86 @@
+% wave_in = SOUND_IO(fs, var2, var3, var4, var5);
+%
+% - returns $wave_in in format single 
+% - this is specifically writen for MOTU ULTRALITE
+%    It remaps channel 3&4 (ch 1&2 of jack outputs) to 1&2 (head phone output)
+%    and vice versa!
+%
+% Part of the OAE toolbox 
+% Copyright (C) 2008 Torsten Marquardt
+% Terms of the GNU General Public License apply
+% (www.http://www.fsf.org/licensing/licenses/gpl.html).
+
+
+function wave_in = sound_io(fs, var2, var3, var4, var5);
+
+playdevice = 0;
+recdevice = 0;
+
+[n m] = size(var2);
+
+if nargout > 0 & nargin < 4, % sound input only
+	% wave_in = sound_io(SAMPLE_RATE, in_chs, duration_in_sec);
+	inputbuffer = pawavplaya(0, -1, fs, min(var2), max(var2), ...
+		var3*fs, recdevice);
+	wave_in = inputbuffer(:,var2 - min(var2)+1);
+	
+elseif nargout < 1, % sound output only
+	if n < m,
+		var2 = var2';
+	end,
+	
+	% sound_io(SAMPLE_RATE, wave_out, out_chs,[n_repeats]);
+	if nargin < 4,
+		var4 = 1; % n_repeats
+	end,
+	
+	if ~isscalar(var4),
+		error('$var4 (n_repeats) must be scalar')
+	end,
+	
+	if length(var3) ~= m,
+		error('$var3 (out_chs) must agree with no. of colums of var2!')
+	end,
+	
+	% playbuffer(:,var3) = var2;
+	% remap out_chs for MOTU ULTRALITE (see comment above)
+	out_chs = var3;
+	ch1 = var3 == 1;
+	ch2 = var3 == 2;
+	ch3 = var3 == 3;
+	ch4 = var3 == 4;
+	out_chs(ch1) = 3;
+	out_chs(ch2) = 4;
+	out_chs(ch3) = 1;
+	out_chs(ch4) = 2;
+	
+	playbuffer(:,out_chs) = single(var2);
+	pawavplaya(repmat(playbuffer,var4,1), playdevice, fs, 0, 0, 0, -1);
+	
+else % synchroneous sound in and out
+	% wave_in = sound_io(SAMPLE_RATE, wave_out, out_chs, in_chs, [n_repeats]);
+	if nargin < 5,
+		var5 = 1; % n_repeats
+	end,
+	
+	if length(var3) ~= m,
+		error('$var3 (out_chs) must agree with no. of colums of var2!')
+	end,
+	
+	% playbuffer(:,var4) = var2;
+	% remap out_chs for MOTU ULTRALITE (see comment above)
+	out_chs = var3;
+	ch1 = var3 == 1;
+	ch2 = var3 == 2;
+	ch3 = var3 == 3;
+	ch4 = var3 == 4;
+	out_chs(ch1) = 3;
+	out_chs(ch2) = 4;
+	out_chs(ch3) = 1;
+	out_chs(ch4) = 2;
+	playbuffer(:,out_chs) = single(var2);
+	
+	inputbuffer = pawavplaya(repmat(playbuffer,var5,1), playdevice, fs,...
+		min(var4), max(var4), var5*n, recdevice);
+	wave_in = inputbuffer(:,var4 - min(var4)+1);
+end,
