@@ -10,7 +10,7 @@
 global SAMPLE_RATE BITS_PER_SAMPLE OAE_PATH MIXER
 
 % Directory where the OAE-Toolbox is situated:
-OAE_PATH = 'C:\Users\Admin\Documents\MATLAB\OAE_gerbil';
+OAE_PATH = fileparts(which(mfilename));
 
 % some soundcard specific informations:
 SAMPLE_RATE = 48000;

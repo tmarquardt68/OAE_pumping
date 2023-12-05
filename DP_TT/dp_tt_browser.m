@@ -20,7 +20,7 @@ switch action
         dp_tt_browser('fill', subject),
         % That variable defines the spacing of the spectral lines and therefore
         % the length of the fft-window:
-        MIN_FREQ = 1;
+        MIN_FREQ = 2.5;
         
         
     case 'fill', % fill listbox

@@ -455,29 +455,16 @@ while a <= n+1
     	H_avg_CM = fft(avg_wave_in(:,2));
 
         % get the actual levels
-        if L1(a) < 0 % SFOAE
-            f(1) = F2(a)+1;
-            f(2) = 0;
-            f(3) = F2(a)-2*F_TT(a)+1;
-            f(4) = F2(a)-F_TT(a)+1;
-            f(5) = F2(a)+F_TT(a)+1;
-            f(6) = F2(a)+2*F_TT(a)+1;
-            f(7) = 0;
-            f(8) = 0;
-            f(9) = 0;
-            f(10) = 0;
-        else % DPOAE
-            f(1) = 2*F1(a)-F2(a)+1;
-            f(2) = F2(a)-F1(a)+1;
-            f(3) = 2*F1(a)-F2(a)-2*F_TT(a)+1;
-            f(4) = 2*F1(a)-F2(a)-F_TT(a)+1;
-            f(5) = 2*F1(a)-F2(a)+F_TT(a)+1;
-            f(6) = 2*F1(a)-F2(a)+2*F_TT(a)+1;
-            f(7) = F2(a)-F1(a)-2*F_TT(a)+1;
-            f(8) = F2(a)-F1(a)-F_TT(a)+1;
-            f(9) = F2(a)-F1(a)+F_TT(a)+1;
-            f(10) = F2(a)-F1(a)+2*F_TT(a)+1;
-        end
+        f(1) = 2*F1(a)-F2(a)+1;
+        f(2) = F2(a)-F1(a)+1;
+        f(3) = 2*F1(a)-F2(a)-2*F_TT(a)+1;
+        f(4) = 2*F1(a)-F2(a)-F_TT(a)+1;
+        f(5) = 2*F1(a)-F2(a)+F_TT(a)+1;
+        f(6) = 2*F1(a)-F2(a)+2*F_TT(a)+1;
+        f(7) = F2(a)-F1(a)-2*F_TT(a)+1;
+        f(8) = F2(a)-F1(a)-F_TT(a)+1;
+        f(9) = F2(a)-F1(a)+F_TT(a)+1;
+        f(10) = F2(a)-F1(a)+2*F_TT(a)+1;
         for q=length(f):-1:1
             if f(q)>0 & f(q) < length (H_avg_acoust)
                 l_dp(a,q) = round(20*log10(abs(H_avg_acoust(f(q))))*10)/10;

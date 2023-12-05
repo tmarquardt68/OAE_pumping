@@ -131,7 +131,7 @@ switch action
 				return,
 			end,
 		end
-		eval(['!mkdir ',OAE_PATH,'\Subjects\',subject]),
+		eval(['mkdir(''',OAE_PATH,'\Subjects\',subject ''')']),
 % 		born =''; phone =''; address =''; comment ='';
 % 		save([OAE_PATH,'\Subjects\',subject,'\Personal_data'],...
 % 			'born','phone','address','comment'),
